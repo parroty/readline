@@ -1,3 +1,16 @@
+defmodule Mix.Tasks.Compile.Readline do
+  use Mix.Task
+  @shortdoc "Compiles readline library"
+  def run(_) do
+    if Mix.shell.cmd("make") != 0 do
+      raise Mix.Error, message: """
+        Could not run `make`.
+        Please check if `clang`/`gcc` and `cmake` are installed.
+      """
+    end
+  end
+end
+
 defmodule Readline.Mixfile do
   use Mix.Project
 
@@ -5,6 +18,7 @@ defmodule Readline.Mixfile do
     [app: :readline,
      version: "0.0.1",
      elixir: "~> 1.0",
+     compilers: [:readline, :elixir, :app],
      deps: deps]
   end
 
