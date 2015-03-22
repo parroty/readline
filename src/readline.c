@@ -53,24 +53,20 @@ result_string(ErlNifEnv* env, char *string) {
 /* api functions */
 static ERL_NIF_TERM
 e_readline(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[]) {
-    // int length;
-    // enif_get_int(env, argv[0], &length);
-    // char buf[length + 1];
-    // if(enif_get_string(env, argv[1], buf, length + 1, ERL_NIF_LATIN1) < 1) {
-    //     return enif_make_badarg(env);
-    // }
+    int length;
+    enif_get_int(env, argv[0], &length);
+    char buf[length + 1];
+    if(enif_get_string(env, argv[1], buf, length + 1, ERL_NIF_LATIN1) < 1) {
+        return enif_make_badarg(env);
+    }
 
-    fflush(stdin);
-    fflush(stdout);
     char *string;
-    string = readline("user> ");
-    printf("string = %s\n", string);
-    fflush(stdin);
-    fflush(stdout);
+    string = readline(buf);
+    printf("string = %s\r\n", string);
 
     ERL_NIF_TERM result = result_string(env, string);
     free(string);
-    printf("returning from NIF\n");
+    printf("returning from NIF\r\n");
     return result;
 }
 
@@ -84,13 +80,9 @@ e_add_history(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[]) {
         return enif_make_badarg(env);
     }
 
-    fflush(stdin);
-    fflush(stdout);
     int code = add_history(buf);
-    fflush(stdin);
-    fflush(stdout);
+    printf("returning from NIF\r\n");
 
-    printf("returning from NIF\n");
     return result_code(env, code);
 }
 
@@ -99,16 +91,10 @@ static ERL_NIF_TERM
 e_scanf(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[]) {
     char buf[256];
 
-    fflush(stdin);
-    fflush(stdout);
-
     scanf("%s", buf);
-    printf("buf = %s\r\n", buf);
+    printf("buf = %s, len = %d\r\n", buf, (int)strlen(buf));
+    printf("returning from NIF\r\n");
 
-    fflush(stdin);
-    fflush(stdout);
-
-    printf("returning from NIF\n");
     return result_string(env, buf);
 }
 
@@ -121,9 +107,7 @@ e_printf(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[]) {
         return enif_make_badarg(env);
     }
 
-    fflush(stdout);
-    printf("%s\n", buf);
-    fflush(stdout);
+    printf("%s\r\n", buf);
 
     return result_string(env, buf);
 }

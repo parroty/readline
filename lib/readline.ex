@@ -6,6 +6,7 @@ defmodule Readline do
   end
 
   def run2 do
+    IO.puts (IO.gets "user> ")
     msg = Readline.Nif.scanf
     IO.puts msg
     msg
