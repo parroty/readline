@@ -7,6 +7,7 @@ Readline
 
 ```elixir
 > iex -S mix
+
 > Readline.Nif.add_history(3, 'abc')
 > Readline.Nif.add_history(3, 'def')
 > msg = Readline.Nif.readline(6, 'user> ')

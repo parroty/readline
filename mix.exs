@@ -3,10 +3,7 @@ defmodule Mix.Tasks.Compile.Readline do
   @shortdoc "Compiles readline library"
   def run(_) do
     if Mix.shell.cmd("make") != 0 do
-      raise Mix.Error, message: """
-        Could not run `make`.
-        Please check if `clang`/`gcc` and `cmake` are installed.
-      """
+      raise Mix.Error, message: "Could not run `make`"
     end
   end
 end
